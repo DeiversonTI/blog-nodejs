@@ -29,10 +29,6 @@ app.use('/', articlesController)
 app.use('/', categoriesController)
 
 
-
-
-
-
 //pasta public
 app.use(express.static('public'))
 
