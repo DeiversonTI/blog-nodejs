@@ -33,7 +33,10 @@ app.use('/', categoriesController)
 app.use(express.static('public'))
 
 app.get("/", (req, res) => {
-    res.render("index")
+    Article.findAll().then(article => {
+         res.render("index", {articles: article})
+    })
+   
 })
 
 app.listen(8080, () => console.log('Server Conectado! '))

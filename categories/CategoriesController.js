@@ -15,10 +15,10 @@ router.post('/categories/save', (res, req) => {
             title: MyTitle,
             slug: Slugify(MyTitle)
         }).then(() => {
-            req.redirect("/")
+            req.render("admin/categories/new")
         })
     } else {
-        req.redirect("admin/categories/new")
+        req.redirect("admin/categories")
     }
 
 })

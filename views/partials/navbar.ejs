@@ -1,17 +1,25 @@
-<nav class="navbar navbar-dark bg-primary">
-    <a class="navbar-brand mx-5" href="/">
+<nav class="navbar navbar-dark bg-primary navbar-expand-lg">
+    <div class="container-fluid">
+    <a class="navbar-brand ms-5" href="/">
         Blog-Nodejs
     </a>
 
-    <ul class=" navbar-nav mr-auto mx-5">
+    <ul class=" navbar-nav  " >
         <li class="row nav-item">
             <div class="col-auto">
-                <a class="nav-link" href="/admin/categories">Categorias</a>
+                <a class="nav-link active" href="/admin/categories">Categorias</a>
             </div>
             <div class="col-auto">
-                <a class="nav-link" href="/admin/articles/new">Artigos</a>
+                <a class="nav-link" href="/admin/articles">Artigos</a>
+            </div>
+            <div class="col-auto ">
+                <a class="nav-link  btn btn-danger link-light px-2 active" href="/admin/categories/new">New Categoria</a>
+            </div>
+            <div class="col-auto">
+                <a class="nav-link  btn btn-success link-light px-2 active" href="/admin/articles/new">New Artigo</a>
             </div>
         </li>
       
     </ul>
+    </div>
 </nav>
