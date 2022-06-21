@@ -5,10 +5,10 @@
     <hr>
     <div class="row align-items-center justify-content-between">
         <div class="col-auto">
-            <h2>Categorias</h2>
+            <h2>Artigo</h2>
         </div>
         <div class="col-auto">
-            <a href="/admin/categories/new" class="btn btn-success"> Nova Categoria</a>
+            <a href="/admin/articles/new" class="btn btn-success"> Novo Artigo</a>
         </div>
     </div>
     <hr>
@@ -19,26 +19,11 @@
                 <th>Id</th>
                 <th>Título</th>
                 <th>Slug</th>
+                <th>Categoria</th>
                 <th>Ações</th>
             </tr>
         </thead>
         <tbody>
-            <% categorias.forEach(categorias => { %>
-            <tr>
-                <th><%= categorias.id %></th>
-                <th><%= categorias.title%></th>
-                <th><%= categorias.slug %></th>
-                <th>
-                    <a href="/admin/categories/edit/<%= categorias.id %>" class="btn btn-warning">Editar</a>
-
-                   
-                    <form method="POST" action="/categories/delete" style="display: inline" onsubmit="DelConfim(event, this)">
-                        <input type="hidden" name="id" value="<%= categorias.id %>" >
-                        <button class="btn btn-danger">Deletar</button>
-                    </form>
-                </th>
-            </tr>
-            <% }) %>
         </tbody>
 
     </table>

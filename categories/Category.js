@@ -14,6 +14,6 @@ const Category = conn.define('categories', {
     }
 })
 
-// Category.sync({force: true})
+// Category.sync()
 
 module.exports = Category

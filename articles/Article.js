@@ -7,7 +7,8 @@ const Article = conn.define('article', {
         type: Sequelize.STRING,
         allowNull: false
 
-    },slug: {
+    },
+    slug: {
         type: Sequelize.STRING,
         allowNull: false
     },
@@ -20,6 +21,6 @@ const Article = conn.define('article', {
 Category.hasMany(Article)
 Article.belongsTo(Category)
 
-// Article.sync({force: false})
+// Article.sync()
 
 module.exports = Article
