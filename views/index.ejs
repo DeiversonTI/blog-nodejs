@@ -8,7 +8,6 @@
             <p class="lead">Criação de uma aplicação de Blog em NodeJs</p>
             <hr class="my-4">
             <p>Blog NodeJs com Bootstrap e MySql</p>
-            <a class="btn btn-primary btn-lg" href="#" role="button">Learn more</a>
     </div><br>
         <% articles.forEach(article => { %>
         <div class="card">
@@ -16,7 +15,7 @@
                 <h2><%= article.title%></h2>
             </div>
             <div class="card-body">
-                <a href="#" class="btn btn-primary">ler mais</a>
+                <a href="/<%= article.slug %>" class="btn btn-primary">ler mais</a>
             </div>
 
         </div>

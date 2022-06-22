@@ -1,15 +1,20 @@
-<nav class="navbar navbar-dark bg-primary">
+<nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+    
     <a class="navbar-brand ms-5" href="/">
         Blog-Nodejs
     </a>
 
-    <ul class=" navbar-nav me-auto ">
-        <li class="row nav-item">
-            <div class="col-auto">
-                <a class="nav-link active" href="/">Home</a>
+    <ul class=" navbar-nav me-auto d-flex flex-row gap-2 ">
+       
+    <% categories.forEach(category => { %>
+        <li class="nav-item">
+           <div>
+                <a class="nav-link " href="/category/<%= category.slug %>"><%= category.title %></a>
             </div>
-          
         </li>
+       
+       <% }) %>
+       
       
     </ul>
 </nav>

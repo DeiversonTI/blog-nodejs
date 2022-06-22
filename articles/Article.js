@@ -13,7 +13,7 @@ const Article = conn.define('article', {
         allowNull: false
     },
     body:{
-        type: Sequelize.STRING,
+        type: Sequelize.TEXT,
         allowNull: false
     }
 })

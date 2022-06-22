@@ -6,9 +6,16 @@ const Slugify = require('slugify')
 
 router.get('/admin/articles', (res, req) => {
     Articles.findAll({
-        // include: [ { model: Category} ]
-    }).then(articles => {
-        req.render("admin/articles/index", {articles: articles})
+        include: [{ model: Category, required: true}]
+    }).then(artigosAdmin => {
+        if (artigosAdmin) {
+            req.render("admin/articles/index", { resp: artigosAdmin })
+        } else {
+            console.log("voltei")
+           
+          
+        }
+        
     })
     
 })
@@ -21,16 +28,18 @@ router.get('/admin/articles/new', (res, req) => {
 })
 
 router.post("/articles/save", (res, req) => {
-    var title = res.body.MyTitle
+    var title = res.body.title
     var body = res.body.body
     var category = res.body.category
     Articles.create({
         title: title,
         body: body,
-        slug: Slugify(slug),
+        slug: Slugify(title),
         categoryId: category
     }).then(() => {
          req.redirect("/admin/articles")
+    }).catch((err) => {
+         console.log(err.message)
      })
 })
 
