@@ -24,7 +24,9 @@ router.post('/categories/save', (res, req) => {
 })
 
 router.get("/admin/categories", (res, req) => {
-    Category.findAll().then((resp) => {
+    Category.findAll({
+        order: [['id', 'DESC']]
+    }).then((resp) => {
         req.render("admin/categories/index", {
             categorias: resp
         })

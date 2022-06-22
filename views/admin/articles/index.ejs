@@ -12,8 +12,8 @@
         </div>
     </div>
     <hr>
-    
-    <table class="table table-bordered">
+   
+    <table class="table table-bordered table-light  table-striped">
         <thead>
             <tr>
                 <th>Id</th>
@@ -30,7 +30,9 @@
                         <td><%= article.title %></td>
                         <td><%= article.slug %></td>
                         <td><%= article.category.title %></td>
-                        <td>
+                        <td class="col-2 text-center">
+                            <a href="/admin/articles/edit/<%= article.id %>" class="btn btn-warning">Editar</a>
+
                             <form method="POST" action="/articles/delete" style="display: inline" onsubmit="DelConfim(event, this)">
                                 <input type="hidden" name="id" value="<%= article.id %>" >
                                 <button class="btn btn-danger">Deletar</button>
@@ -40,6 +42,7 @@
                 <% }) %>
         </tbody>
     </table>
+
    
    </div>
 </body>

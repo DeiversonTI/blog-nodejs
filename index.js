@@ -71,17 +71,11 @@ app.get('/category/:slug', (req, res) => {
         where: {
             slug: slug
         },
-        include: [{ model: Article, require: true}]
-    }).then(category => {
-        if (category != undefined) {
-            Category.findAll().then(categories => {
-                res.render("index", { articles: category.articles, categories: categories })
-            })
-        } else {
-            res.redirect("/")
-        }
-    }).catch(() => {
-        res.redirect("/")
+        include: [{ model: Article, require: true }]
+    }).then(categ => {
+        Category.findAll().then(categories => {
+            res.render("index", { articles: categ.articles, categories: categories })
+        })
     })
 })
 app.listen(8080, () => console.log('Server Conectado! '))
