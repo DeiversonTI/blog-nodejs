@@ -1,17 +1,18 @@
 const express = require('express')
 const app = express()
-const session = require('express-session')
+// const session = require('express-session')
 const router = express.Router()
 const User = require('./User')
 const bcrypt = require('bcryptjs')
+const adminAuth = require('../middlewares/adminAuth')
 
 //Session
-app.use(session({
-    secret: "qualquercoisa", cookie: { maxAge: 30000 }
-}))
+// app.use(session({
+//     secret: "qualquercoisa", cookie: { }
+// }))
 
 
-router.get("/admin/users", (req, res) => {
+router.get("/admin/users",adminAuth, (req, res) => {
     User.findAll({ order: [['id', 'DESC']] }).then(users => {
         res.render("admin/users/index", { users: users })
     })
@@ -36,7 +37,7 @@ router.post("/users/create", (res, req) => {
                 email: email,
                 password: hash
             }).then(() => {
-                req.redirect("/admin/users")
+                req.redirect("/")
             }).catch(() => {
                 req.redirect("/")
             })
@@ -54,15 +55,15 @@ router.post("/authenticate", (req, res) => {
     var email = req.body.email
     var password = req.body.password
 
-    User.findOne({where:{email: email }}).then(usuarios => {
-            if (usuarios != undefined) {//se existe um usuario com esse e-mail
+    User.findOne({where:{email: email }}).then(user => {
+            if (user != undefined) {//se existe um usuario com esse e-mail
                 //valida senha
-                var correct = bcrypt.compareSync(password, usuarios.password)
+                var correct = bcrypt.compareSync(password, user.password)
 
                 if (correct) {
                     req.session.user = {
-                        id: usuarios.id,
-                        email: usuarios.email
+                        id: user.id,
+                        email: user.email
                     }
                     res.redirect("/admin/articles")
                     

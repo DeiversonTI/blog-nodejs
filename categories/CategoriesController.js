@@ -2,13 +2,14 @@ const express = require('express')
 const router = express.Router()
 const Category = require('./Category')
 const Slugify = require('slugify')
+const adminAuth = require('../middlewares/adminAuth')
 
 
-router.get('/admin/categories/new', (res, req) => {
+router.get('/admin/categories/new', adminAuth, (res, req) => {
     req.render("admin/categories/new")
 })
 
-router.post('/categories/save', (res, req) => {
+router.post('/categories/save', adminAuth, (res, req) => {
     var MyTitle = res.body.MyTitle
     if (MyTitle != undefined) {
         Category.create({
@@ -23,7 +24,7 @@ router.post('/categories/save', (res, req) => {
 
 })
 
-router.get("/admin/categories", (res, req) => {
+router.get("/admin/categories", adminAuth, (res, req) => {
     Category.findAll({
         order: [['id', 'DESC']]
     }).then((resp) => {
@@ -34,7 +35,7 @@ router.get("/admin/categories", (res, req) => {
 })
 
 //DELETAR ITEM
-router.post('/categories/delete', (req, res) => {
+router.post('/categories/delete', adminAuth, (req, res) => {
     var id = req.body.id
     if (id != undefined) {
         if (!isNaN(id)){
@@ -56,7 +57,7 @@ router.post('/categories/delete', (req, res) => {
     }
 })
 
-router.get('/admin/categories/edit/:id', (res, req) => {
+router.get('/admin/categories/edit/:id', adminAuth, (res, req) => {
     var id = res.params.id
     if (isNaN(id)) {
         req.redirect("/admin/categories")
@@ -72,7 +73,7 @@ router.get('/admin/categories/edit/:id', (res, req) => {
     })
 })
 
-router.post('/categories/update', (req, res) => {
+router.post('/categories/update', adminAuth, (req, res) => {
     var id = req.body.id
     var title = req.body.MyTitle
     Category.update({ title: title, slug: Slugify(title) }, {

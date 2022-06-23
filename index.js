@@ -8,7 +8,7 @@ app.use(bodyParser.json())
 
 //Session
 app.use(session({
-    secret: "qualquercoisa", cookie: { maxAge: 30000 }
+    secret: "qualquercoisa", cookie: { maxAge: 600000 }
 }))
 
 const Category = require('./categories/Category')
@@ -37,11 +37,6 @@ conn.authenticate()
 
 //view engine
 app.set('view engine', 'ejs')
-
-
-
-
-
 
 //pasta public
 app.use(express.static('public'))
