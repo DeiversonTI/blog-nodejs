@@ -1,14 +1,20 @@
 const bodyParser = require('body-parser')
 const express = require('express')
+const session = require('express-session')
 const app = express()
 //body parser
 app.use(bodyParser.urlencoded({ extended: false }))
 app.use(bodyParser.json())
 
+//Session
+app.use(session({
+    secret: "qualquercoisa", cookie: { maxAge: 30000 }
+}))
+
 const Category = require('./categories/Category')
 const Article = require('./articles/Article')
 const User = require('./users/User')
-const session = require('express-session')
+
 
 const articlesController = require('./articles/ArticlesController')
 const categoriesController = require('./categories/CategoriesController')
@@ -34,10 +40,7 @@ app.set('view engine', 'ejs')
 
 
 
-//Session
-app.use(session({
-    secret: "qualquercoisa", cookie: { maxAge: 30000 }
-}))
+
 
 
 //pasta public

@@ -1,7 +1,14 @@
 const express = require('express')
+const app = express()
+const session = require('express-session')
 const router = express.Router()
 const User = require('./User')
 const bcrypt = require('bcryptjs')
+
+//Session
+app.use(session({
+    secret: "qualquercoisa", cookie: { maxAge: 30000 }
+}))
 
 
 router.get("/admin/users", (req, res) => {
@@ -47,15 +54,15 @@ router.post("/authenticate", (req, res) => {
     var email = req.body.email
     var password = req.body.password
 
-    User.findOne({ where: { email: email } })
-        .then(user => {
-            if (user != undefined) {
-                var correct = bcrypt.compareSync(password, user.password)
+    User.findOne({where:{email: email }}).then(usuarios => {
+            if (usuarios != undefined) {//se existe um usuario com esse e-mail
+                //valida senha
+                var correct = bcrypt.compareSync(password, usuarios.password)
 
                 if (correct) {
                     req.session.user = {
-                        id: user.id,
-                        email: user.email
+                        id: usuarios.id,
+                        email: usuarios.email
                     }
                     res.redirect("/admin/articles")
                     
