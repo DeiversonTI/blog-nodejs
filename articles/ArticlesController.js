@@ -3,9 +3,10 @@ const router = express.Router()
 const Category = require('../categories/Category')
 const Articles = require('./Article')
 const Slugify = require('slugify')
+const adminAuth = require('../middlewares/adminAuth')
 
 
-router.get('/admin/articles', (res, req) => {
+router.get('/admin/articles', adminAuth, (res, req) => {
     Articles.findAll({
         include: [{ model: Category, required: true }],
         order: [['id', 'DESC']]
@@ -18,14 +19,14 @@ router.get('/admin/articles', (res, req) => {
 
 })
 
-router.get('/admin/articles/new', (res, req) => {
+router.get('/admin/articles/new', adminAuth, (res, req) => {
     Category.findAll().then(categories => {
         req.render("admin/articles/new", { categories: categories })
     })
 
 })
 
-router.post("/articles/save", (res, req) => {
+router.post("/articles/save", adminAuth, (res, req) => {
     var title = res.body.title
     var body = res.body.body
     var category = res.body.category
@@ -42,7 +43,7 @@ router.post("/articles/save", (res, req) => {
 })
 
 //DELETAR ITEM
-router.post('/articles/delete', (req, res) => {
+router.post('/articles/delete', adminAuth, (req, res) => {
     var id = req.body.id
     if (id != undefined) {
         if (!isNaN(id)) {
@@ -64,7 +65,7 @@ router.post('/articles/delete', (req, res) => {
     }
 })
 
-router.get('/admin/articles/edit/:id', (res, req) => {
+router.get('/admin/articles/edit/:id', adminAuth, (res, req) => {
     var id = res.params.id
     Articles.findByPk(id)
         .then((article) => {
@@ -81,7 +82,7 @@ router.get('/admin/articles/edit/:id', (res, req) => {
         })
 })
 
-router.post('/articles/update', (res, req) => {
+router.post('/articles/update', adminAuth, (res, req) => {
     var id = res.body.id
     var title = res.body.title
     var body = res.body.body
@@ -106,12 +107,13 @@ router.get('/articles/page/:num', (req, res) => {
     if(isNaN(page) || page == 1) {
         offset = 0
     } else {
-        offset = parseInt(page) * 4
+        offset = parseInt((page)-1) * 4
     }
 
     Articles.findAndCountAll({
         limit: 4,
-        offset: offset
+        offset: offset,
+        order: [['id', 'DESC']]
     }).then((articles) => {
 
         var next
@@ -122,11 +124,17 @@ router.get('/articles/page/:num', (req, res) => {
         }
 
         var result = {
+            page: parseInt(page),
             next: next,
             articles:  articles
         }
 
-        res.json(result)
+        Category.findAll().then((categories) => {
+            res.render("admin/articles/page", {
+                result: result, categories: categories
+            })
+        })
+
     })
 })
 

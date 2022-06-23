@@ -5,8 +5,13 @@
     </a>
 
     <ul class=" navbar-nav me-auto d-flex flex-row gap-2 ">
+        <li class="nav-item">
+            <div>
+                <a class="nav-link" href="/">Home</a>
+            </div>
+        </li>
        
-    <% articles.forEach(category => { %>
+    <% categories.forEach(category => { %>
         <li class="nav-item">
            <div>
                 <a class="nav-link " href="/category/<%= category.slug%>"><%= category.title%></a>

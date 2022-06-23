@@ -7,6 +7,16 @@ app.use(bodyParser.json())
 
 const Category = require('./categories/Category')
 const Article = require('./articles/Article')
+const User = require('./users/User')
+const session = require('express-session')
+
+const articlesController = require('./articles/ArticlesController')
+const categoriesController = require('./categories/CategoriesController')
+const usersController = require('./users/UsersController')
+
+app.use('/', articlesController)
+app.use('/', categoriesController)
+app.use('/', usersController)
 
 //conect db
 const conn = require('./database/database')
@@ -22,22 +32,25 @@ conn.authenticate()
 //view engine
 app.set('view engine', 'ejs')
 
-const articlesController = require('./articles/ArticlesController')
-const categoriesController = require('./categories/CategoriesController')
 
-app.use('/', articlesController)
-app.use('/', categoriesController)
+
+//Session
+app.use(session({
+    secret: "qualquercoisa", cookie: { maxAge: 30000 }
+}))
 
 
 //pasta public
 app.use(express.static('public'))
 
+
 app.get("/", (req, res) => {
     Article.findAll({
-        order: [['id', 'DESC']]
-    }).then(article => {
-        Category.findAll().then(categorias => {
-            res.render("index", { articles: article, categorias: categorias })
+        order: [['id', 'DESC']],
+        limit: 4
+    }).then(articles => {
+        Category.findAll().then(categories => {
+            res.render("index", { articles: articles, categories: categories })
         })
     }).catch((err) => {
         console.log(err.message)
@@ -72,10 +85,17 @@ app.get('/category/:slug', (req, res) => {
             slug: slug
         },
         include: [{ model: Article, require: true }]
-    }).then(categ => {
-        Category.findAll().then(categories => {
-            res.render("index", { articles: categ.articles, categories: categories })
-        })
+    }).then( category => {
+        if (category != undefined) {
+            Category.findAll().then(categories => {
+                res.render("index", { articles: category.articles, categories: categories })
+            })
+        } else {
+            res.redirect("/")
+        }
+
+    }).catch(() => {
+        res.redirect("/")
     })
 })
 app.listen(8080, () => console.log('Server Conectado! '))
